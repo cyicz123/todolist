@@ -21,4 +21,7 @@ redis:
   password:
 
 log:
-  level: debug 
+  user:
+    level: debug 
+    logFile: false
+    logFilePrefix: "log/"

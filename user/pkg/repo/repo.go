@@ -14,8 +14,8 @@ type User struct {
 type UserRepository interface {
 	Create(user *User) error
 	Update(user *User) error
-	Delete(id int) error
-	GetByID(id int) (*User, error)
+	Delete(name string) error
+	GetByID(id uint) (*User, error)
 	GetByName(name string) (*User, error)
 }
 

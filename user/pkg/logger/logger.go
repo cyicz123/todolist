@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 type Interface interface {
@@ -43,7 +44,10 @@ func (l *Logger)Panic(args ...interface{}) {
 	l.logger.Panic(args...)
 }
 
-func New(name string, level string) *Logger {
+func New(name string) *Logger {
+	isEnableLogFile := viper.GetBool("log.user.logFile")
+	logFilePrefix := viper.GetString("log.user.logFilePrefix")
+	level := viper.GetString("log.user.level")
 	var l logrus.Level
 	switch strings.ToLower(level) {
 	case "debug":
@@ -57,12 +61,15 @@ func New(name string, level string) *Logger {
 	}
 	logrus.SetLevel(l)
 	logrus.SetReportCaller(true)
-	writter, err := os.OpenFile("logs/"+time.Now().Format("2006-01-02")+".log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0755)
-	if err!=nil {
-		panic(err)
+	if isEnableLogFile {
+		writter, err := os.OpenFile(logFilePrefix+time.Now().Format("2006-01-02")+".log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0755)
+		if err!=nil {
+			panic(err)
+		}
+		mw := io.MultiWriter(os.Stdout, writter)
+		logrus.SetOutput(mw)
 	}
-	mw := io.MultiWriter(os.Stdout, writter)
-	logrus.SetOutput(mw)
+
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	return &Logger{
 		logger: logrus.WithFields(logrus.Fields{"module": name}),

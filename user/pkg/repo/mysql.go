@@ -50,10 +50,24 @@ func (f *MysqlFactory) New(l logger.Interface) (UserRepository,error) {
 	sqlDB.SetMaxOpenConns(100) //打开
 	sqlDB.SetConnMaxLifetime(time.Second * 30)
 
-	return &UserModel{
+	u := &UserModel{
 		db: db,
 		log: l,
-	},nil
+	}
+	f.migration(u)
+	return u,nil
+}
+
+func (f *MysqlFactory) migration(u *UserModel) {
+	//自动迁移模式
+	err := u.db.Set("gorm:table_options", "charset=utf8mb4").
+		AutoMigrate(
+			&User{},
+		)
+	if err != nil {
+		u.log.Panic("register table fail")
+	}
+	u.log.Info("register table success")
 }
 
 func (u *UserModel) Create(user *User) error {
@@ -74,8 +88,8 @@ func (u *UserModel) Update(user *User) error {
 	return nil
 }
 
-func (u *UserModel) Delete(id int) error {
-	user := &User{UserID: uint(id)}
+func (u *UserModel) Delete(name string) error {
+	user := &User{UserName: name}
 	err := u.db.Delete(user).Error
 	if err != nil {
 		u.log.Error("failed to delete user:", err)
@@ -84,7 +98,7 @@ func (u *UserModel) Delete(id int) error {
 	return nil
 }
 
-func (u *UserModel) GetByID(id int) (*User, error) {
+func (u *UserModel) GetByID(id uint) (*User, error) {
 	user := &User{}
 	err := u.db.First(user, id).Error
 	if err != nil {
