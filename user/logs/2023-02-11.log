@@ -1,0 +1,9 @@
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:27","func":"user/pkg/logger.(*Logger).Debug","level":"debug","module":"user","msg":"sfasd","time":"2023-02-11T18:26:02+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:27","func":"user/pkg/logger.(*Logger).Debug","level":"debug","module":"user","msg":"debug","time":"2023-02-11T18:46:16+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:31","func":"user/pkg/logger.(*Logger).Info","level":"info","module":"user","msg":"info","time":"2023-02-11T18:46:16+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:35","func":"user/pkg/logger.(*Logger).Warn","level":"warning","module":"user","msg":"warn","time":"2023-02-11T18:46:16+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:39","func":"user/pkg/logger.(*Logger).Error","level":"error","module":"user","msg":"error","time":"2023-02-11T18:46:16+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:27","func":"user/pkg/logger.(*Logger).Debug","level":"debug","module":"user","msg":"debugdfasdf","time":"2023-02-11T18:47:09+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:31","func":"user/pkg/logger.(*Logger).Info","level":"info","module":"user","msg":"info","time":"2023-02-11T18:47:09+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:35","func":"user/pkg/logger.(*Logger).Warn","level":"warning","module":"user","msg":"warn","time":"2023-02-11T18:47:09+08:00"}
+{"file":"/home/cyicz123/go/todoList/user/pkg/logger/logger.go:39","func":"user/pkg/logger.(*Logger).Error","level":"error","module":"user","msg":"error","time":"2023-02-11T18:47:09+08:00"}
