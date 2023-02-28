@@ -19,15 +19,15 @@ type UserModel struct{
 	log logger.Interface
 }
 
-func (f *MysqlFactory) New(l logger.Interface) (UserRepository,error) {
-	host := viper.GetString("mysql.host")
-	port := viper.GetString("mysql.port")
-	database := viper.GetString("mysql.database")
-	username := viper.GetString("mysql.username")
-	password := viper.GetString("mysql.password")
-	charset := viper.GetString("mysql.charset")
+func (f *MysqlFactory) New(l logger.Interface, v *viper.Viper) (UserRepository,error) {
+	host := v.GetString("mysql.host")
+	port := v.GetString("mysql.port")
+	database := v.GetString("mysql.database")
+	username := v.GetString("mysql.username")
+	password := v.GetString("mysql.password")
+	charset := v.GetString("mysql.charset")
 	dsn := strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=" + charset + "&parseTime=true"}, "")
-
+	l.Debug(dsn)
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,      // DSN data source name
 		DefaultStringSize:         256,      // string 类型字段的默认长度
@@ -42,7 +42,7 @@ func (f *MysqlFactory) New(l logger.Interface) (UserRepository,error) {
 		},
 	})
 	if err != nil {
-		l.Error("Set database error.")
+		l.Error("Set database error. err:", err)
 		return nil,err
 	}
 	sqlDB, _ := db.DB()

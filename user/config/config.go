@@ -1,18 +1,23 @@
 package config
 
 import (
-	"os"
-
 	"github.com/spf13/viper"
 )
 
-func InitConfig() {
-	workDir, _ := os.Getwd()
-	viper.SetConfigName("config")
-	viper.SetConfigType("yml")
-	viper.AddConfigPath(workDir+"/config")
-	err := viper.ReadInConfig()
+var (
+	instance *viper.Viper
+)
+
+func init() {
+	instance.SetConfigName("config")
+	instance.SetConfigType("yml")
+	instance.AddConfigPath("$HOME/.config/todolist/")
+	err := instance.ReadInConfig()
 	if err!=nil {
 		panic(err)
 	}
+}
+
+func GetInstance() *viper.Viper {
+	return instance
 }

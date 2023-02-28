@@ -3,6 +3,7 @@ package repo
 import (
 	"testing"
 	"user/pkg/logger"
+	"user/config"
 	
 	"github.com/stretchr/testify/assert"
 )
@@ -11,7 +12,8 @@ func TestUserRepository(t *testing.T) {
 	// 实例化一个UserRepository
 	dbFactoty := &MysqlFactory{}
 	l := logger.New("repoTest")
-	userRepo, err := dbFactoty.New(l)
+	v := config.GetInstance()
+	userRepo, err := dbFactoty.New(l, v)
 	assert.NoError(t, err)
 
 	// 创建一个用户

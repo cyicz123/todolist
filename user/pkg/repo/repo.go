@@ -2,6 +2,8 @@ package repo
 
 import (
 	"user/pkg/logger"
+
+	"github.com/spf13/viper"
 )
 
 type User struct {
@@ -20,5 +22,5 @@ type UserRepository interface {
 }
 
 type DBFactory interface {
-	New(logger.Interface) (UserRepository,error)
+	New(l logger.Interface, v *viper.Viper) (UserRepository,error)
 }
