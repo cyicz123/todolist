@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TestUserRepository is a test function that tests the UserRepository interface and its implementations.
 func TestUserRepository(t *testing.T) {
 	// 实例化一个UserRepository
 	dbFactoty := &MysqlFactory{}

@@ -1,3 +1,6 @@
+// Package logger provides an interface and implementation for a logger using logrus library.
+// The logger implementation supports logging at different levels such as Debug, Info, Warn, Error, and Panic.
+// The logger can be configured using viper configuration library.
 package logger
 
 import (
@@ -10,18 +13,30 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Interface provides a contract for a logger with methods such as Debug, Info, Warn, Error, and Panic.
 type Interface interface {
+	// Debug logs a message at the Debug level.
 	Debug(args ...interface{})
+
+	// Info logs a message at the Info level.
 	Info(args ...interface{})
+
+	// Warn logs a message at the Warning level.
 	Warn(args ...interface{})
+
+	// Error logs a message at the Error level.
 	Error(args ...interface{})
+
+	// Panic logs a message at the Panic level.
 	Panic(args ...interface{})
 }
 
+// Logger provides an implementation for the logger interface using the logrus library.
 type Logger struct {
 	logger *logrus.Entry
 }
 
+// Ensure that Logger implements the Interface.
 var _ Interface = (*Logger)(nil)
 
 func (l *Logger)Debug(args ...interface{}) {
@@ -44,6 +59,9 @@ func (l *Logger)Panic(args ...interface{}) {
 	l.logger.Panic(args...)
 }
 
+// New creates a new Logger instance and configures it based on the provided name and configuration stored in viper.
+// If log file is enabled in configuration, the Logger instance writes logs to a file.
+// The Logger instance uses the logrus library for logging and supports logging at different levels.
 func New(name string) *Logger {
 	isEnableLogFile := viper.GetBool("log.user.logFile")
 	logFilePrefix := viper.GetString("log.user.logFilePrefix")

@@ -12,13 +12,17 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// MysqlFactory implements the DBFactory interface for creating a MySQL user repository.
 type MysqlFactory struct{}
 
+// UserModel implements the UserRepository interface using a gorm.DB instance for MySQL.
 type UserModel struct{
 	db *gorm.DB
 	log logger.Interface
 }
 
+// New creates a new UserModel instance that implements the UserRepository interface for a MySQL user repository.
+// The method uses viper configuration library to configure the MySQL connection and connection pool settings.
 func (f *MysqlFactory) New(l logger.Interface, v *viper.Viper) (UserRepository,error) {
 	host := v.GetString("mysql.host")
 	port := v.GetString("mysql.port")
@@ -58,6 +62,8 @@ func (f *MysqlFactory) New(l logger.Interface, v *viper.Viper) (UserRepository,e
 	return u,nil
 }
 
+// migration performs an automatic migration of the User table in the database using the gorm.AutoMigrate method.
+// The method sets the table options to utf8mb4 and logs success or panics on failure.
 func (f *MysqlFactory) migration(u *UserModel) {
 	//自动迁移模式
 	err := u.db.Set("gorm:table_options", "charset=utf8mb4").
