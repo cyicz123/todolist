@@ -9,6 +9,7 @@ var (
 )
 
 func init() {
+	instance = viper.New()
 	instance.SetConfigName("config")
 	instance.SetConfigType("yml")
 	instance.AddConfigPath("$HOME/.config/todolist/")

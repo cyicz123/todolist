@@ -90,7 +90,7 @@ func (u *UserModel) Update(user *User) error {
 
 func (u *UserModel) Delete(name string) error {
 	user := &User{UserName: name}
-	err := u.db.Delete(user).Error
+	err := u.db.Where("user_name=?", name).First(user).Delete(user).Error
 	if err != nil {
 		u.log.Error("failed to delete user:", err)
 		return err
