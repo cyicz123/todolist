@@ -1,8 +1,9 @@
-package repo
+package repo_test
 
 import (
 	"testing"
 	"user/pkg/logger"
+	"user/pkg/repo"
 	"user/config"
 	
 	"github.com/stretchr/testify/assert"
@@ -11,14 +12,14 @@ import (
 // TestUserRepository is a test function that tests the UserRepository interface and its implementations.
 func TestUserRepository(t *testing.T) {
 	// 实例化一个UserRepository
-	dbFactoty := &MysqlFactory{}
+	dbFactoty := &repo.MysqlFactory{}
 	l := logger.New("repoTest")
 	v := config.GetInstance()
 	userRepo, err := dbFactoty.New(l, v)
 	assert.NoError(t, err)
 
 	// 创建一个用户
-	user := &User{
+	user := &repo.User{
 		UserName:       "testuser",
 		NickName:       "Test User",
 		PasswordDigest: "testpassword",
