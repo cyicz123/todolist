@@ -1,0 +1,57 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.19.x]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      # - name: Install Docker Compose
+      #   run: |
+      #     sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      #     sudo chmod +x /usr/local/bin/docker-compose
+      # - name: Start docker-compose
+      #   run: docker-compose up -d
+      - name: Run Unit tests.
+        run: make dep test
+        working-directory: ./user
+      - name: Generate test coverage
+        run: make test-coverage
+        working-directory: ./user
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: ./user/coverage.txt
+
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: ./coverage.txt
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: ./coverage.txt
