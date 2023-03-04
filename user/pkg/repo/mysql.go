@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"fmt"
 	"strings"
 	"time"
 	"user/pkg/logger"
@@ -30,9 +31,20 @@ func (f *MysqlFactory) New(l logger.Interface, v *viper.Viper) (UserRepository,e
 	username := v.GetString("mysql.username")
 	password := v.GetString("mysql.password")
 	charset := v.GetString("mysql.charset")
-	dsn := strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=" + charset + "&parseTime=true"}, "")
-	l.Debug(dsn)
-	db, err := gorm.Open(mysql.New(mysql.Config{
+	dsn := strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", "?charset=" + charset + "&parseTime=true"}, "")
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		l.Error("Set database error. err:", err)
+		return nil,err
+	}
+
+	ret := db.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", database))
+	if ret.Error != nil {
+		return nil, ret.Error
+	}
+
+	dsn = strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=" + charset + "&parseTime=true"}, "")
+	db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,      // DSN data source name
 		DefaultStringSize:         256,      // string 类型字段的默认长度
 		DisableDatetimePrecision:  true,     // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
@@ -49,6 +61,7 @@ func (f *MysqlFactory) New(l logger.Interface, v *viper.Viper) (UserRepository,e
 		l.Error("Set database error. err:", err)
 		return nil,err
 	}
+
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(20)  //设置连接池，空闲
 	sqlDB.SetMaxOpenConns(100) //打开
