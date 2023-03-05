@@ -1,4 +1,4 @@
-module user
+module github.com/cyicz123/todolist/user
 
 go 1.19
 

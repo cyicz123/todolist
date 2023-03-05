@@ -3,7 +3,7 @@
 package repo
 
 import (
-	"user/pkg/logger"
+	"github.com/cyicz123/todolist/user/pkg/logger"
 
 	"github.com/spf13/viper"
 )

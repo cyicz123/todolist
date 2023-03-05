@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
-	"user/pkg/logger"
+	"github.com/cyicz123/todolist/user/pkg/logger"
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
