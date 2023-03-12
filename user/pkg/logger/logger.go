@@ -2,6 +2,7 @@
 // The logger implementation supports logging at different levels such as Debug, Info, Warn, Error, and Panic.
 // The logger can be configured using viper configuration library.
 package logger
+//go:generate mockgen -source=./logger.go -destination=../../mocks/logger_mock.go -package=mocks
 
 import (
 	"io"

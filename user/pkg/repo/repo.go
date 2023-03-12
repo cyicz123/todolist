@@ -1,6 +1,7 @@
 // Package repo provides an interface and implementation for a user repository.
 // The repository uses GORM as the ORM library and supports the CRUD (Create, Read, Update, Delete) operations for User entity.
 package repo
+//go:generate mockgen -source=./repo.go -destination=../../mocks/repo_mock.go -package=mocks
 
 import (
 	"github.com/cyicz123/todolist/user/pkg/logger"

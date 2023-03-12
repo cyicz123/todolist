@@ -3,6 +3,7 @@ module github.com/cyicz123/todolist/user
 go 1.19
 
 require (
+	github.com/golang/mock v1.6.0
 	github.com/sirupsen/logrus v1.9.0
 	gorm.io/driver/mysql v1.4.7
 )
