@@ -117,7 +117,7 @@ func (u *UserModel) Delete(name string) error {
 	return nil
 }
 
-func (u *UserModel) GetByID(id uint) (*User, error) {
+func (u *UserModel) GetByID(id uint32) (*User, error) {
 	user := &User{}
 	err := u.db.First(user, id).Error
 	if err != nil {

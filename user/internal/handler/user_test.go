@@ -7,9 +7,10 @@ import (
 	"github.com/cyicz123/todolist/user/pkg/e"
 	"github.com/cyicz123/todolist/user/pkg/repo"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 )
 
-type TestCases struct {
+type testCases struct {
 	name     string
 	input    string
 	expected interface{}
@@ -18,7 +19,7 @@ type TestCases struct {
 
 // var user repo.User
 
-var userNameTc = []TestCases{
+var userNameTc = []testCases{
 	{
 		name:     "Valid username with lowercase letters",
 		input:    "john_doe",
@@ -66,14 +67,12 @@ func TestCheckUserName(t *testing.T) {
 	for _, tc := range userNameTc {
 		t.Run(tc.name, func(t *testing.T) {
 			result := u.checkUserName(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }
 
-var passwordTc = []TestCases{
+var passwordTc = []testCases{
 	{
 		name:     "Invalid password that is null",
 		input:    "",
@@ -101,14 +100,12 @@ func TestCheckPassword(t *testing.T) {
 	for _, tc := range passwordTc {
 		t.Run(tc.name, func(t *testing.T) {
 			result := u.checkPassword(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }
 
-var userExistTc = []TestCases{
+var userExistTc = []testCases{
 	{
 		name:     "Exist",
 		input:    "username1",
@@ -139,9 +136,7 @@ func TestCheckUserExist(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r.EXPECT().GetByName(tc.input).Return(tc.mockExpected...).Times(1)
 			result := u.checkUserExist(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }
@@ -245,9 +240,7 @@ func TestRegister(t *testing.T) {
 			r.EXPECT().Create(tc.input).Return(tc.mockExpected[1]...).MaxTimes(1)
 
 			result := u.Register(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }
@@ -332,14 +325,12 @@ func TestLogin(t *testing.T) {
 			r.EXPECT().GetByName(tc.input.UserName).Return(tc.mockExpected...).MaxTimes(1)
 
 			result := u.Login(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }
 
-var userDeleteTc = []TestCases{
+var userDeleteTc = []testCases{
 	{
 		name:     "success",
 		input:    "username",
@@ -377,9 +368,7 @@ func TestUserDelet(t *testing.T) {
 			r.EXPECT().Delete(tc.input).Return(tc.mockExpected...).MaxTimes(1)
 
 			result := u.UserDelete(tc.input)
-			if result != tc.expected {
-				t.Errorf("expected %v, but got %v", tc.expected, result)
-			}
+			assert.Equal(t, tc.expected, result)
 		})
 	}
 }

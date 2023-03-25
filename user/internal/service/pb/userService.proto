@@ -1,0 +1,23 @@
+syntax="proto3";
+package userService;
+import "userModels.proto";
+option go_package = "/internal/service;service";
+
+message UserRequest{
+  string NickName=1;
+  string UserName=2;
+  string Password=3;
+}
+
+message UserDetailResponse{
+  UserModel UserDetail=1;
+  uint32 Code=2;
+}
+
+
+service UserService{
+  rpc UserLogin(UserRequest) returns(UserDetailResponse);
+  rpc UserRegister(UserRequest) returns(UserDetailResponse);
+  rpc UserLogout(UserRequest) returns(UserDetailResponse);
+  rpc UserDelete(UserRequest) returns(UserDetailResponse);
+}

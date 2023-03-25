@@ -65,7 +65,7 @@ func (mr *MockUserRepositoryMockRecorder) Delete(name interface{}) *gomock.Call 
 }
 
 // GetByID mocks base method.
-func (m *MockUserRepository) GetByID(id uint) (*repo.User, error) {
+func (m *MockUserRepository) GetByID(id uint32) (*repo.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
 	ret0, _ := ret[0].(*repo.User)

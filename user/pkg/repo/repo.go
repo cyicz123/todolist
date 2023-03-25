@@ -11,7 +11,7 @@ import (
 
 // User represents a user entity with the fields such as UserID, UserName, NickName, and PasswordDigest.
 type User struct {
-	UserID         uint      `gorm:"primarykey"`	// UserID represents the unique identifier for a user.
+	UserID         uint32    `gorm:"primarykey"`	// UserID represents the unique identifier for a user.
 	UserName       string    `gorm:"unique"`		// UserName represents the unique username for a user.
 	NickName       string							// NickName represents the nickname for a user.
 	PasswordDigest string							// PasswordDigest represents the hashed password for a user.
@@ -29,7 +29,7 @@ type UserRepository interface {
 	Delete(name string) error
 
 	// GetByID retrieves a user from the repository by the provided user ID and returns the user and an error if any occurred.
-	GetByID(id uint) (*User, error)
+	GetByID(id uint32) (*User, error)
 
 	// GetByName retrieves a user from the repository by the provided username and returns the user and an error if any occurred.
 	GetByName(name string) (*User, error)
