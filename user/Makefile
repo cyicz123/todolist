@@ -8,11 +8,16 @@ CONFIG_DIR := $(HOME)/.config/todolist
 
 all: build
 
-dep: ## Get the dependencies
+install: ## Get the dependencies
 	if [ ! -d $(CONFIG_DIR) ]; then \
         mkdir $(CONFIG_DIR); \
 		cp -p ./config/config.yml $(CONFIG_DIR); \
     fi
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.29.0
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+	go install github.com/golang/mock/mockgen@v1.6.0
+	go generate ./...
+	protoc -I internal/service/pb internal/service/pb/*.proto --go-grpc_out=. --go_out=.
 	go mod tidy
 
 test: ## Run unittests
@@ -21,7 +26,7 @@ test: ## Run unittests
 test-coverage: ## Run tests with coverage
 	go test -short -coverprofile coverage.txt -covermode=atomic $(PKG_USER_LIST)
 
-build: dep ## Build the binary file
+build: install ## Build the binary file
 	go build -i -o build/main $(PKG)
 
 clean: ## Remove previous build
