@@ -1,0 +1,13 @@
+syntax="proto3";
+package userService;
+option go_package = "/internal/service;service";
+
+message UserModel {
+    uint32 UserID=1;
+    
+    string UserName=2;
+    
+    string NickName=3;
+
+    string PasswordDigest=4;
+}
