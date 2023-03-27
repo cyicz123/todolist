@@ -104,6 +104,45 @@ func TestUserRegister(t *testing.T) {
 	} 
 }
 
+var userDeleteTc = []*testCases{
+    {
+            name: "Delete_Success",
+            input:  &UserRequest{
+                UserName: "test1",
+            },
+            expected: &UserDetailResponse{
+                Code: uint32(e.SUCCESS.Code()),
+            },
+            mockExpected: nil,
+        },
+        {
+            name:          "Delete_Failed",
+            input:  &UserRequest{
+                UserName: "test1",
+            },
+            expected:      &UserDetailResponse{Code: e.ServiceInternalErr.Code()},
+            mockExpected:  e.ServiceInternalErr,
+    },
+}
+
+func TestUserDelete(t *testing.T) {
+    ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	user := mocks.NewMockUserInterface(ctrl)
+
+    u := NewUserService(user)
+    
+    for _, tc := range userDeleteTc {
+		t.Run(tc.name, func(t *testing.T) {
+			user.EXPECT().UserDelete(tc.input.UserName).Return(tc.mockExpected).Times(1)
+			result, err := u.UserDelete(context.Background(),tc.input)
+			assert.Equal(t, tc.expected, result)
+            assert.Equal(t, tc.mockExpected, err)
+        })
+	} 
+}
+
 func TestUserLogout(t *testing.T) {
     mockReq := &UserRequest{}
     service := &UserService{}

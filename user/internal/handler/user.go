@@ -27,6 +27,13 @@ type UserInfo struct {
 	l logger.Interface
 }
 
+func NewUserInfo(r repo.UserRepository, l logger.Interface) *UserInfo {
+	return &UserInfo{
+		r: r,
+		l: l,
+	}
+}
+
 // Register creates a new user. Returns an error if the provided user name or password is invalid or if the user already exists.
 func (u *UserInfo) Register(info *repo.User) e.ErrInterface {
 	if !u.checkUserName(info.UserName) {
