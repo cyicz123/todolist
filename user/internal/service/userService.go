@@ -9,6 +9,7 @@ import (
 )
 
 type UserService struct {
+	UnimplementedUserServiceServer
 	user			handler.UserInterface
 }
 
@@ -34,9 +35,17 @@ func (u *UserService) UserRegister(ctx context.Context, req *UserRequest) (*User
 	return &UserDetailResponse{Code: uint32(e.SUCCESS.Code())}, nil
 }
 
-func (u *UserService) UserLogout (ctx context.Context, req *UserRequest) (resp *UserDetailResponse,err error) {
-	resp = new(UserDetailResponse)
-	return resp, nil
+func (u *UserService) UserLogout(ctx context.Context, req *UserRequest) (*UserDetailResponse, error) {
+	return &UserDetailResponse{Code: uint32(e.SUCCESS.Code())}, nil
+}
+
+func (u *UserService) UserDelete(ctx context.Context, req *UserRequest) (*UserDetailResponse, error) {
+	info, _ := u.req2userModel(req)
+	err := u.user.UserDelete(info.UserName)
+	if err != nil {
+		return &UserDetailResponse{Code: uint32(err.Code())}, err
+	}
+	return &UserDetailResponse{Code: uint32(e.SUCCESS.Code())}, nil
 }
 
 func (u *UserService) req2userModel(req *UserRequest) (*repo.User, e.ErrInterface) {
